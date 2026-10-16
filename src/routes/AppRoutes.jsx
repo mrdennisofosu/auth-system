@@ -1,14 +1,16 @@
 import { Routes, Route, Navigate } from "react-router";
 import { ROUTES } from "../constants/routePaths";
 import PlaceholderPage from "../pages/PlaceholderPage";
+import PublicLayout from "../layouts/PublicLayout";
+import AdminLayout from "../layouts/AdminLayout";
+import UserLayout from "../layouts/UserLayout";
 
 function AppRoutes() {
   return (
     <Routes>
       {/* ---------- PUBLIC ROUTES ----------
-          Open to everyone. Navbar only (no sidebar).
-          A PublicLayout is added to this group in Step 5. */}
-      <Route>
+          Open to everyone. Navbar + footer, no sidebar. */}
+      <Route element={<PublicLayout />}>
         <Route
           path={ROUTES.HOME}
           element={<PlaceholderPage title="Homepage" />}
@@ -41,12 +43,14 @@ function AppRoutes() {
           path={ROUTES.ACCESS_DENIED}
           element={<PlaceholderPage title="Access Denied" />}
         />
+
+        {/* Unknown URLs also use the public frame */}
+        <Route path="*" element={<PlaceholderPage title="Page Not Found" />} />
       </Route>
 
       {/* ---------- ADMIN ROUTES ----------
-          Admin only (guard added in Phase 3).
-          Navbar + sidebar via AdminLayout (added in Step 5). */}
-      <Route path={ROUTES.ADMIN.ROOT}>
+          Admin only (guard added in Phase 3). Navbar + admin sidebar. */}
+      <Route path={ROUTES.ADMIN.ROOT} element={<AdminLayout />}>
         <Route
           index
           element={<Navigate to={ROUTES.ADMIN.OVERVIEW} replace />}
@@ -98,9 +102,8 @@ function AppRoutes() {
       </Route>
 
       {/* ---------- USER ROUTES ----------
-          Signed-in users only (guard added in Phase 3).
-          Navbar + sidebar via UserLayout (added in Step 5). */}
-      <Route path={ROUTES.USER.ROOT}>
+          Signed-in users only (guard added in Phase 3). Navbar + user sidebar. */}
+      <Route path={ROUTES.USER.ROOT} element={<UserLayout />}>
         <Route
           index
           element={<Navigate to={ROUTES.USER.DASHBOARD} replace />}
@@ -155,9 +158,6 @@ function AppRoutes() {
           element={<PlaceholderPage title="Announcements" />}
         />
       </Route>
-
-      {/* ---------- UNKNOWN URLS ---------- */}
-      <Route path="*" element={<PlaceholderPage title="Page Not Found" />} />
     </Routes>
   );
 }
