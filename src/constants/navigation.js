@@ -75,3 +75,9 @@ export const profileMenuItems = {
     { label: 'My Profile', to: ROUTES.USER.PROFILE, icon: CircleUser },
   ],
 }
+// Which sidebar menu belongs to which role.
+// AppLayout uses this to pick the menu for whoever is signed in.
+export const navigationByRole = {
+  [ROLES.ADMIN]: adminNavigation,
+  [ROLES.USER]: userNavigation,
+}

@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { ROUTES } from "../constants/routePaths";
+import DevSessionPanel from "./DevSessionPanel";
 
 // TEMPORARY: used only while we build the real pages.
 // Each route points here until its real page is created.
@@ -38,7 +39,7 @@ function PlaceholderPage({ title }) {
   return (
     <div className="mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
       <h1 className="text-2xl font-bold text-brand-700 sm:text-3xl">{title}</h1>
-      <p className="mt-2 text-slate-600">
+      <p className="mt-2 break-all text-slate-600">
         Placeholder page. Current URL:{" "}
         <strong className="text-slate-900">{location.pathname}</strong>
       </p>
@@ -59,13 +60,15 @@ function PlaceholderPage({ title }) {
         </span>
       </div>
 
+      <DevSessionPanel />
+
       <h2 className="mt-8 text-lg font-semibold">Test links</h2>
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {testLinks.map(([label, path]) => (
           <Link
             key={path}
             to={path}
-            className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-brand-700 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
+            className="flex min-h-11 items-center rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-brand-700 shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
           >
             {label}
           </Link>
