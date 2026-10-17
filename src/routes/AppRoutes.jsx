@@ -3,6 +3,7 @@ import { ROUTES } from "../constants/routePaths";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import AppLayout from "../layouts/AppLayout";
 import Home from "../pages/public/Home";
+import Register from "../pages/auth/Register";
 
 function AppRoutes() {
   return (
@@ -20,10 +21,7 @@ function AppRoutes() {
           path={ROUTES.LOGIN}
           element={<PlaceholderPage title="Sign In" />}
         />
-        <Route
-          path={ROUTES.REGISTER}
-          element={<PlaceholderPage title="Register" />}
-        />
+        <Route path={ROUTES.REGISTER} element={<Register />} />
         <Route
           path={ROUTES.VERIFY_EMAIL}
           element={<PlaceholderPage title="Verify Email" />}

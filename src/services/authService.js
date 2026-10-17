@@ -56,3 +56,28 @@ export async function login({ email, password }) {
 export async function logout() {
   await delay(300)
 }
+// MOCK: registration.
+// Input (what the backend will eventually receive): { fullName, email, password }
+// For now it only checks whether the email is taken and returns success.
+// Phase 3, Step 1 will also save the new account in the mock database and
+// start email verification.
+export async function register(payload) {
+  await delay(900)
+
+  const email = payload.email.trim().toLowerCase()
+  const alreadyRegistered = mockUsers.some(
+    (account) => account.email.toLowerCase() === email,
+  )
+
+  if (alreadyRegistered) {
+    throw new ApiError('An account with this email address already exists.', {
+      status: 409,
+      code: 'EMAIL_ALREADY_REGISTERED',
+    })
+  }
+
+  return {
+    email,
+    message: 'Registration successful. Please verify your email address.',
+  }
+}
