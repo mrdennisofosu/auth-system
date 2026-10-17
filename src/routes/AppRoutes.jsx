@@ -1,16 +1,21 @@
 import { Routes, Route, Navigate } from "react-router";
 import { ROUTES } from "../constants/routePaths";
-import PlaceholderPage from "../pages/PlaceholderPage";
+import { ROLES } from "../constants/roles";
 import AppLayout from "../layouts/AppLayout";
+import ProtectedRoute from "./ProtectedRoute";
+import PlaceholderPage from "../pages/PlaceholderPage";
 import Home from "../pages/public/Home";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
+import VerifyEmail from "../pages/auth/VerifyEmail";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
+import AccessDenied from "../pages/auth/AccessDenied";
 
 function AppRoutes() {
   return (
     <Routes>
-      {/* Every page uses the same AppLayout. It shows the sidebar only
-          while someone is signed in. */}
+      {/* Every page uses the same AppLayout (sidebar only while signed in) */}
       <Route element={<AppLayout />}>
         {/* ---------- PUBLIC ROUTES ---------- */}
         <Route path={ROUTES.HOME} element={<Home />} />
@@ -20,26 +25,16 @@ function AppRoutes() {
         />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.REGISTER} element={<Register />} />
-        <Route
-          path={ROUTES.VERIFY_EMAIL}
-          element={<PlaceholderPage title="Verify Email" />}
-        />
-        <Route
-          path={ROUTES.FORGOT_PASSWORD}
-          element={<PlaceholderPage title="Forgot Password" />}
-        />
-        <Route
-          path={ROUTES.RESET_PASSWORD}
-          element={<PlaceholderPage title="Reset Password" />}
-        />
-        <Route
-          path={ROUTES.ACCESS_DENIED}
-          element={<PlaceholderPage title="Access Denied" />}
-        />
+        <Route path={ROUTES.VERIFY_EMAIL} element={<VerifyEmail />} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
+        <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+        <Route path={ROUTES.ACCESS_DENIED} element={<AccessDenied />} />
 
-        {/* ---------- ADMIN ROUTES ----------
-            Admin only (guard added in Phase 3). */}
-        <Route path={ROUTES.ADMIN.ROOT}>
+        {/* ---------- ADMIN ROUTES: admins only ---------- */}
+        <Route
+          path={ROUTES.ADMIN.ROOT}
+          element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}
+        >
           <Route
             index
             element={<Navigate to={ROUTES.ADMIN.OVERVIEW} replace />}
@@ -90,9 +85,11 @@ function AppRoutes() {
           </Route>
         </Route>
 
-        {/* ---------- USER ROUTES ----------
-            Signed-in users only (guard added in Phase 3). */}
-        <Route path={ROUTES.USER.ROOT}>
+        {/* ---------- USER ROUTES: signed-in users only ---------- */}
+        <Route
+          path={ROUTES.USER.ROOT}
+          element={<ProtectedRoute allowedRoles={[ROLES.USER]} />}
+        >
           <Route
             index
             element={<Navigate to={ROUTES.USER.DASHBOARD} replace />}

@@ -1,27 +1,26 @@
 import { useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import { APP_NAME } from "../constants/app";
 import { navigationByRole } from "../constants/navigation";
+import { ROUTES } from "../constants/routePaths";
 import { useAuth } from "../hooks/useAuth";
 
 // The ONE layout for the whole app.
 //   Signed out: navbar (with Sign In) + page + footer. No sidebar.
 //   Signed in:  the sidebar appears automatically, with the menu for their role.
-// It reads the signed-in user, so it reacts the moment someone signs in or out.
 function AppLayout() {
   const { user, logout } = useAuth();
-
-  // Is the phone drawer open? Shared by the Navbar (menu button) and the Sidebar.
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // The menu for this user's role, or nothing when signed out
   const navigation = user ? navigationByRole[user.role] : null;
   const hasSidebar = Boolean(navigation);
 
   async function handleLogout() {
-    setSidebarOpen(false); // make sure the drawer is closed for the next sign-in
+    setSidebarOpen(false); // so the drawer is closed for the next sign-in
+    navigate(ROUTES.HOME); // leave any protected page first
     await logout();
   }
 
