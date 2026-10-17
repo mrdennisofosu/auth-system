@@ -11,6 +11,8 @@ import VerifyEmail from "../pages/auth/VerifyEmail";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import AccessDenied from "../pages/auth/AccessDenied";
+import Overview from "../pages/admin/Overview";
+import UserManagement from "../pages/admin/UserManagement";
 
 function AppRoutes() {
   return (
@@ -39,16 +41,10 @@ function AppRoutes() {
             index
             element={<Navigate to={ROUTES.ADMIN.OVERVIEW} replace />}
           />
-          <Route
-            path={ROUTES.ADMIN.OVERVIEW}
-            element={<PlaceholderPage title="Admin: Overview" />}
-          />
+          <Route path={ROUTES.ADMIN.OVERVIEW} element={<Overview />} />
 
           {/* Management group */}
-          <Route
-            path={ROUTES.ADMIN.USERS}
-            element={<PlaceholderPage title="Admin: User Management" />}
-          />
+          <Route path={ROUTES.ADMIN.USERS} element={<UserManagement />} />
           <Route
             path={ROUTES.ADMIN.ACTIVITY_LOGS}
             element={<PlaceholderPage title="Admin: Activity Logs" />}

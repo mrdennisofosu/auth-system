@@ -13,7 +13,7 @@ import { ApiError } from './apiError'
 // there is no real email. A real backend would put those links in an email.
 
 // Only these fields are ever sent to the UI. A real API never returns the password.
-function toPublicUser(user) {
+export function toPublicUser(user) {
   return {
     id: user.id,
     fullName: user.fullName,
