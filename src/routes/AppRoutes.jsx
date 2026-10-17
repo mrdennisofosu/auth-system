@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router";
 import { ROUTES } from "../constants/routePaths";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import AppLayout from "../layouts/AppLayout";
+import Home from "../pages/public/Home";
 
 function AppRoutes() {
   return (
@@ -10,10 +11,7 @@ function AppRoutes() {
           while someone is signed in. */}
       <Route element={<AppLayout />}>
         {/* ---------- PUBLIC ROUTES ---------- */}
-        <Route
-          path={ROUTES.HOME}
-          element={<PlaceholderPage title="Homepage" />}
-        />
+        <Route path={ROUTES.HOME} element={<Home />} />
         <Route
           path={ROUTES.ANNOUNCEMENTS}
           element={<PlaceholderPage title="Public Announcements" />}
