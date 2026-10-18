@@ -12,13 +12,22 @@ import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import AccessDenied from "../pages/auth/AccessDenied";
 import RegistrationGate from "../components/auth/RegistrationGate";
+import AnnouncementsPage from "../components/announcements/AnnouncementsPage";
+import AnnouncementDetailPage from "../components/announcements/AnnouncementDetailPage";
 import Overview from "../pages/admin/Overview";
 import UserManagement from "../pages/admin/UserManagement";
 import ActivityLogs from "../pages/admin/ActivityLogs";
 import Announcements from "../pages/admin/Announcements";
+import SupportRequests from "../pages/admin/SupportRequests";
 import SystemSettings from "../pages/admin/SystemSettings";
 import AccountProfile from "../pages/admin/AccountProfile";
 import AccountSecurity from "../pages/admin/AccountSecurity";
+import Dashboard from "../pages/user/Dashboard";
+import Support from "../pages/user/Support";
+import SecurityPassword from "../pages/user/SecurityPassword";
+import SecurityEmail from "../pages/user/SecurityEmail";
+import SecuritySessions from "../pages/user/SecuritySessions";
+import SecurityActivity from "../pages/user/SecurityActivity";
 
 function AppRoutes() {
   return (
@@ -29,7 +38,11 @@ function AppRoutes() {
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route
           path={ROUTES.ANNOUNCEMENTS}
-          element={<PlaceholderPage title="Public Announcements" />}
+          element={<AnnouncementsPage basePath={ROUTES.ANNOUNCEMENTS} />}
+        />
+        <Route
+          path={`${ROUTES.ANNOUNCEMENTS}/:id`}
+          element={<AnnouncementDetailPage listPath={ROUTES.ANNOUNCEMENTS} />}
         />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route
@@ -63,10 +76,7 @@ function AppRoutes() {
             path={ROUTES.ADMIN.ANNOUNCEMENTS}
             element={<Announcements />}
           />
-          <Route
-            path={ROUTES.ADMIN.SUPPORT}
-            element={<PlaceholderPage title="Admin: Support Requests" />}
-          />
+          <Route path={ROUTES.ADMIN.SUPPORT} element={<SupportRequests />} />
 
           {/* System */}
           <Route path={ROUTES.ADMIN.SETTINGS} element={<SystemSettings />} />
@@ -97,21 +107,15 @@ function AppRoutes() {
             index
             element={<Navigate to={ROUTES.USER.DASHBOARD} replace />}
           />
-          <Route
-            path={ROUTES.USER.DASHBOARD}
-            element={<PlaceholderPage title="My Dashboard" />}
-          />
+          <Route path={ROUTES.USER.DASHBOARD} element={<Dashboard />} />
 
-          {/* Account group */}
+          {/* Account group (the profile page is shared with the admin dashboard) */}
           <Route path={ROUTES.USER.ACCOUNT}>
             <Route
               index
               element={<Navigate to={ROUTES.USER.PROFILE} replace />}
             />
-            <Route
-              path={ROUTES.USER.PROFILE}
-              element={<PlaceholderPage title="Account: My Profile" />}
-            />
+            <Route path={ROUTES.USER.PROFILE} element={<AccountProfile />} />
           </Route>
 
           {/* Security group */}
@@ -120,31 +124,25 @@ function AppRoutes() {
               index
               element={<Navigate to={ROUTES.USER.PASSWORD} replace />}
             />
-            <Route
-              path={ROUTES.USER.PASSWORD}
-              element={<PlaceholderPage title="Security: Change Password" />}
-            />
+            <Route path={ROUTES.USER.PASSWORD} element={<SecurityPassword />} />
             <Route
               path={ROUTES.USER.EMAIL_VERIFICATION}
-              element={<PlaceholderPage title="Security: Email Verification" />}
+              element={<SecurityEmail />}
             />
-            <Route
-              path={ROUTES.USER.SESSIONS}
-              element={<PlaceholderPage title="Security: Active Sessions" />}
-            />
-            <Route
-              path={ROUTES.USER.ACTIVITY}
-              element={<PlaceholderPage title="Security: Recent Activity" />}
-            />
+            <Route path={ROUTES.USER.SESSIONS} element={<SecuritySessions />} />
+            <Route path={ROUTES.USER.ACTIVITY} element={<SecurityActivity />} />
           </Route>
 
-          <Route
-            path={ROUTES.USER.SUPPORT}
-            element={<PlaceholderPage title="Support" />}
-          />
+          <Route path={ROUTES.USER.SUPPORT} element={<Support />} />
           <Route
             path={ROUTES.USER.ANNOUNCEMENTS}
-            element={<PlaceholderPage title="Announcements" />}
+            element={<AnnouncementsPage basePath={ROUTES.USER.ANNOUNCEMENTS} />}
+          />
+          <Route
+            path={`${ROUTES.USER.ANNOUNCEMENTS}/:id`}
+            element={
+              <AnnouncementDetailPage listPath={ROUTES.USER.ANNOUNCEMENTS} />
+            }
           />
         </Route>
 

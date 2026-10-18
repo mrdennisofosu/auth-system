@@ -74,7 +74,12 @@ function LatestAnnouncements() {
                   {formatDate(announcement.publishedAt)}
                 </time>
                 <h3 className="mt-1 font-semibold text-slate-900">
-                  {announcement.title}
+                  <Link
+                    to={`${ROUTES.ANNOUNCEMENTS}/${announcement.id}`}
+                    className="hover:text-brand-700 hover:underline"
+                  >
+                    {announcement.title}
+                  </Link>
                 </h3>
                 <p className="mt-2 line-clamp-3 text-sm text-slate-600">
                   {announcement.content}
