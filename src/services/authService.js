@@ -6,6 +6,7 @@ import { ACCOUNT_STATUS } from '../constants/statuses'
 import { ACTIVITY_TYPE } from '../constants/activity'
 import { ROLES } from '../constants/roles'
 import { ApiError } from './apiError'
+import { endCurrentSession, startSession } from '../mock/mockSessions'
 
 // MOCK SERVICE: pretends to be the server. In Phase 11 each function body
 // becomes a real API request, and nothing that calls these functions changes.
@@ -79,6 +80,7 @@ export async function login({ email, password }) {
   }
 
   user.lastLogin = new Date().toISOString()
+  startSession(user.id)
   recordActivity({
     type: ACTIVITY_TYPE.LOGIN,
     actorName: user.fullName,
@@ -90,6 +92,7 @@ export async function login({ email, password }) {
 
 export async function logout() {
   await delay(300)
+  endCurrentSession()
 }
 
 // ---------------------------------------------------------------- REGISTRATION

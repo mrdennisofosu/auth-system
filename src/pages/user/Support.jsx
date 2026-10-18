@@ -109,7 +109,9 @@ function Support() {
       {view?.type === "details" && (
         <RequestDetailsModal
           request={view.request}
+          user={user}
           onClose={() => setView(null)}
+          onChanged={reload}
         />
       )}
     </PageContainer>

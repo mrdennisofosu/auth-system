@@ -1,8 +1,11 @@
 import { Link } from "react-router";
+import { SHOW_DEV_TOOLS } from "../../constants/app";
 
 // TEMPORARY: stands in for the email a real system would send.
-// Deleted when the real backend is connected.
+// Hidden when SHOW_DEV_TOOLS is false; deleted when the real backend is connected.
 function DevEmailBox({ to, label }) {
+  if (!SHOW_DEV_TOOLS) return null;
+
   return (
     <div className="mt-6 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm">
       <p className="font-semibold text-amber-900">

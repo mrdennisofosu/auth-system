@@ -7,6 +7,7 @@ import { APP_NAME } from "../constants/app";
 import { navigationByRole } from "../constants/navigation";
 import { ROUTES } from "../constants/routePaths";
 import { useAuth } from "../hooks/useAuth";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 // The ONE layout for the whole app.
 //   Signed out: navbar (with Sign In) + page + footer. No sidebar.
@@ -17,6 +18,8 @@ function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [confirmingLogout, setConfirmingLogout] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+
+  usePageTitle();
 
   const navigation = user ? navigationByRole[user.role] : null;
   const hasSidebar = Boolean(navigation);
@@ -40,6 +43,14 @@ function AppLayout() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-slate-50">
+      {/* Lets keyboard users jump past the navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-brand-700 focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
+
       <Navbar
         user={user}
         showPublicLinks={!user}
@@ -58,7 +69,11 @@ function AppLayout() {
         )}
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <main className="flex-1">
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="flex-1 focus:outline-none"
+          >
             <Outlet />
           </main>
 

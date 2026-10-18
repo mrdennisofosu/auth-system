@@ -1,6 +1,8 @@
 import { delay } from '../mock/delay'
 import { mockActivities } from '../mock/mockActivity'
 import { getActivityMeta } from '../utils/activityLabels'
+import { ACTIVITY_TYPE } from '../constants/activity'
+
 
 // MOCK SERVICE for the activity log (admin). In Phase 11 this becomes GET /api/activity-logs.
 // group = a filter such as 'signins' or 'failed'; from / to = dates like '2026-10-01'.
@@ -55,6 +57,20 @@ export async function listRecentActivityForUser(email, limit = 5) {
   const normalized = email.toLowerCase()
   return mockActivities
     .filter((activity) => activity.actorEmail.toLowerCase() === normalized)
+    .slice(0, limit)
+    .map((activity) => ({ ...activity }))
+}
+// Failed sign-in attempts made with one person's email (newest first).
+export async function listFailedSignInsForUser(email, limit = 5) {
+  await delay(300)
+
+  const normalized = email.toLowerCase()
+  return mockActivities
+    .filter(
+      (activity) =>
+        activity.type === ACTIVITY_TYPE.LOGIN_FAILED &&
+        activity.actorEmail.toLowerCase() === normalized,
+    )
     .slice(0, limit)
     .map((activity) => ({ ...activity }))
 }

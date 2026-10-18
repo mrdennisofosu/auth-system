@@ -6,6 +6,7 @@ import { ROLES } from '../constants/roles'
 import { SUPPORT_STATUS } from '../constants/statuses'
 import { supportStatusMeta } from '../utils/supportLabels'
 import { ApiError } from './apiError'
+import { QUICK_REPLIES } from '../constants/quickReplies'
 
 // MOCK SERVICE for support requests, used by BOTH dashboards.
 // In Phase 11 each function becomes a real request. The real backend also checks
@@ -139,6 +140,48 @@ export async function createSupportRequest({ subject, message }, user) {
   }
   nextNumber += 1
   mockSupportRequests.push(item)
+
+  return copy(item)
+}
+
+// The user's ONLY way to write back: choose one of the preset replies.
+// The server owns the list, so no free text can be sent. A reply is allowed only
+// when the last message came from an administrator, so nobody can flood the admin.
+export async function sendQuickReply(id, presetId, user) {
+  await delay(600)
+
+  const item = find(id)
+
+  if (item.userId !== user.id) {
+    throw new ApiError('Support request not found.', { status: 404, code: 'NOT_FOUND' })
+  }
+
+  const preset = QUICK_REPLIES.find((reply) => reply.id === presetId)
+  if (!preset) {
+    throw new ApiError('That reply is not available.', { status: 400, code: 'INVALID_REPLY' })
+  }
+
+  const last = item.replies[item.replies.length - 1]
+  if (!last || last.authorRole !== ROLES.ADMIN) {
+    throw new ApiError('Please wait for support to reply before sending another message.', {
+      status: 409,
+      code: 'WAIT_FOR_SUPPORT',
+    })
+  }
+
+  nextReplyNumber += 1
+  item.replies.push({
+    id: `r-${nextReplyNumber}`,
+    authorId: user.id,
+    authorName: user.fullName,
+    authorRole: user.role,
+    message: preset.message,
+    createdAt: new Date().toISOString(),
+  })
+
+  if (preset.effect === 'resolve') item.status = SUPPORT_STATUS.RESOLVED
+  if (preset.effect === 'reopen') item.status = SUPPORT_STATUS.IN_PROGRESS
+  item.updatedAt = new Date().toISOString()
 
   return copy(item)
 }

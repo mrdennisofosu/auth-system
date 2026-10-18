@@ -18,6 +18,8 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { listSupportRequests } from "../../services/supportService";
 import { formatDate } from "../../utils/formatDate";
 import { supportStatusFilterOptions } from "../../utils/supportLabels";
+import Badge from "../../components/ui/Badge";
+import { awaitingAdmin } from "../../utils/support";
 
 function SupportRequests() {
   const { user: currentUser } = useAuth();
@@ -56,7 +58,12 @@ function SupportRequests() {
     {
       key: "status",
       header: "Status",
-      render: (item) => <SupportBadge status={item.status} />,
+      render: (item) => (
+        <div className="flex flex-wrap items-center justify-end gap-1 md:justify-start">
+          <SupportBadge status={item.status} />
+          {awaitingAdmin(item) && <Badge tone="red">Needs reply</Badge>}
+        </div>
+      ),
     },
     {
       key: "updated",

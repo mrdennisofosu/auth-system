@@ -39,7 +39,7 @@ export const adminNavigation = [
     children: [
       { label: 'My Profile', to: ROUTES.ADMIN.ACCOUNT_PROFILE, icon: User },
       { label: 'Security', to: ROUTES.ADMIN.ACCOUNT_SECURITY, icon: ShieldCheck },
-    ],
+      { label: 'Active Sessions', to: ROUTES.ADMIN.ACCOUNT_SESSIONS, icon: MonitorSmartphone },    ],
   },
 ]
 

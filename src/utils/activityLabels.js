@@ -15,7 +15,7 @@ export const ACTIVITY_META = {
   [ACTIVITY_TYPE.ROLE_CHANGED]: { label: 'Role changed', tone: 'brand', group: 'roles' },
   [ACTIVITY_TYPE.ADMIN_ACTION]: { label: 'Admin action', tone: 'slate', group: 'admin' },
   [ACTIVITY_TYPE.PROFILE_UPDATED]: { label: 'Profile updated', tone: 'slate', group: 'profile' },
-}
+  [ACTIVITY_TYPE.SESSION_REVOKED]: { label: 'Session signed out', tone: 'amber', group: 'sessions' },}
 
 export function getActivityMeta(type) {
   return ACTIVITY_META[type] ?? { label: type, tone: 'slate', group: 'admin' }
@@ -31,4 +31,4 @@ export const activityGroupOptions = [
   { value: 'admin', label: 'Administrative actions' },
   { value: 'registrations', label: 'Registrations' },
   { value: 'profile', label: 'Profile updates' },
-]
+  { value: 'sessions', label: 'Session sign-outs' }, ]

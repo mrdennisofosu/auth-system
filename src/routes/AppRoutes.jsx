@@ -3,8 +3,8 @@ import { ROUTES } from "../constants/routePaths";
 import { ROLES } from "../constants/roles";
 import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "./ProtectedRoute";
-import PlaceholderPage from "../pages/PlaceholderPage";
 import Home from "../pages/public/Home";
+import NotFound from "../pages/public/NotFound";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import VerifyEmail from "../pages/auth/VerifyEmail";
@@ -22,6 +22,7 @@ import SupportRequests from "../pages/admin/SupportRequests";
 import SystemSettings from "../pages/admin/SystemSettings";
 import AccountProfile from "../pages/admin/AccountProfile";
 import AccountSecurity from "../pages/admin/AccountSecurity";
+import AccountSessions from "../pages/admin/AccountSessions";
 import Dashboard from "../pages/user/Dashboard";
 import Support from "../pages/user/Support";
 import SecurityPassword from "../pages/user/SecurityPassword";
@@ -95,6 +96,10 @@ function AppRoutes() {
               path={ROUTES.ADMIN.ACCOUNT_SECURITY}
               element={<AccountSecurity />}
             />
+            <Route
+              path={ROUTES.ADMIN.ACCOUNT_SESSIONS}
+              element={<AccountSessions />}
+            />
           </Route>
         </Route>
 
@@ -147,7 +152,7 @@ function AppRoutes() {
         </Route>
 
         {/* ---------- UNKNOWN URLS ---------- */}
-        <Route path="*" element={<PlaceholderPage title="Page Not Found" />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

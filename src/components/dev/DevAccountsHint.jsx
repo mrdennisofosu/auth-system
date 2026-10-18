@@ -1,9 +1,11 @@
+import { SHOW_DEV_TOOLS } from "../../constants/app";
 import { mockUsers, MOCK_PASSWORD } from "../../mock/mockUsers";
 
 // TEMPORARY developer helper: lists the fake accounts so you can test signing
-// in without typing. It is the only login-page code that reads mock data, and
-// it is deleted when the real backend is connected.
+// in without typing. Hidden when SHOW_DEV_TOOLS is false; deleted with the mock layer.
 function DevAccountsHint({ onUse }) {
+  if (!SHOW_DEV_TOOLS) return null;
+
   return (
     <details className="mt-6 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm">
       <summary className="min-h-11 cursor-pointer py-2 font-semibold text-amber-900">
@@ -16,7 +18,7 @@ function DevAccountsHint({ onUse }) {
       </p>
 
       <ul className="mt-2 space-y-2">
-        {mockUsers.map((account) => (
+        {mockUsers.slice(0, 4).map((account) => (
           <li key={account.id}>
             <button
               type="button"

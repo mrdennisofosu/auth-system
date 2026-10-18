@@ -26,7 +26,7 @@ export const ROUTES = {
     ACCOUNT: '/admin/account',
     ACCOUNT_PROFILE: '/admin/account/profile',
     ACCOUNT_SECURITY: '/admin/account/security',
-  },
+    ACCOUNT_SESSIONS: '/admin/account/sessions',  },
 
   // User dashboard
   USER: {

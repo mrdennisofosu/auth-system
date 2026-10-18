@@ -11,4 +11,5 @@ export const ACTIVITY_TYPE = {
   ROLE_CHANGED: 'role_changed',
   ADMIN_ACTION: 'admin_action',
   PROFILE_UPDATED: 'profile_updated',
+  SESSION_REVOKED: 'session_revoked',
 }
