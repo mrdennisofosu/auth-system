@@ -76,7 +76,11 @@ function DataTable({ columns, rows, rowKey }) {
             </dl>
 
             {actionColumns.map((column) => (
-              <div key={column.key} className="mt-4 flex gap-2 [&>*]:flex-1">
+              <div
+                key={column.key}
+                className="mt-4 flex flex-wrap gap-2 [&>*]:min-w-[7rem] [&>*]:flex-1"
+              >
+                {" "}
                 {cell(column, row)}
               </div>
             ))}

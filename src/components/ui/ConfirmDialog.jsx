@@ -3,10 +3,11 @@ import Modal from "./Modal";
 import Spinner from "./Spinner";
 
 // "Are you sure?" dialog for sensitive actions.
-// variant="danger" makes the confirm button red.
+// variant="danger" makes the confirm button red. `children` can add extra content.
 function ConfirmDialog({
   title,
   message,
+  children,
   confirmLabel = "Confirm",
   variant = "primary",
   loading = false,
@@ -34,7 +35,8 @@ function ConfirmDialog({
         </>
       }
     >
-      <p className="text-slate-600">{message}</p>
+      {message && <p className="text-slate-600">{message}</p>}
+      {children}
     </Modal>
   );
 }

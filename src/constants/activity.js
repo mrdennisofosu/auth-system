@@ -10,4 +10,5 @@ export const ACTIVITY_TYPE = {
   ACCOUNT_DEACTIVATED: 'account_deactivated',
   ROLE_CHANGED: 'role_changed',
   ADMIN_ACTION: 'admin_action',
+  PROFILE_UPDATED: 'profile_updated',
 }

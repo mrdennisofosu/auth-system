@@ -19,11 +19,17 @@ function AuthProvider({ children }) {
     setUser(null);
   }
 
+  // Used after the person edits their own profile, so the navbar etc. update
+  function updateCurrentUser(updatedUser) {
+    setUser(updatedUser);
+  }
+
   const value = {
     user, // null when signed out, otherwise { id, fullName, email, role, ... }
     isAuthenticated: user !== null,
     login,
     logout,
+    updateCurrentUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

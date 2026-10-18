@@ -11,8 +11,14 @@ import VerifyEmail from "../pages/auth/VerifyEmail";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import AccessDenied from "../pages/auth/AccessDenied";
+import RegistrationGate from "../components/auth/RegistrationGate";
 import Overview from "../pages/admin/Overview";
 import UserManagement from "../pages/admin/UserManagement";
+import ActivityLogs from "../pages/admin/ActivityLogs";
+import Announcements from "../pages/admin/Announcements";
+import SystemSettings from "../pages/admin/SystemSettings";
+import AccountProfile from "../pages/admin/AccountProfile";
+import AccountSecurity from "../pages/admin/AccountSecurity";
 
 function AppRoutes() {
   return (
@@ -26,7 +32,14 @@ function AppRoutes() {
           element={<PlaceholderPage title="Public Announcements" />}
         />
         <Route path={ROUTES.LOGIN} element={<Login />} />
-        <Route path={ROUTES.REGISTER} element={<Register />} />
+        <Route
+          path={ROUTES.REGISTER}
+          element={
+            <RegistrationGate>
+              <Register />
+            </RegistrationGate>
+          }
+        />
         <Route path={ROUTES.VERIFY_EMAIL} element={<VerifyEmail />} />
         <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
@@ -45,13 +58,10 @@ function AppRoutes() {
 
           {/* Management group */}
           <Route path={ROUTES.ADMIN.USERS} element={<UserManagement />} />
-          <Route
-            path={ROUTES.ADMIN.ACTIVITY_LOGS}
-            element={<PlaceholderPage title="Admin: Activity Logs" />}
-          />
+          <Route path={ROUTES.ADMIN.ACTIVITY_LOGS} element={<ActivityLogs />} />
           <Route
             path={ROUTES.ADMIN.ANNOUNCEMENTS}
-            element={<PlaceholderPage title="Admin: Announcements" />}
+            element={<Announcements />}
           />
           <Route
             path={ROUTES.ADMIN.SUPPORT}
@@ -59,10 +69,7 @@ function AppRoutes() {
           />
 
           {/* System */}
-          <Route
-            path={ROUTES.ADMIN.SETTINGS}
-            element={<PlaceholderPage title="Admin: System Settings" />}
-          />
+          <Route path={ROUTES.ADMIN.SETTINGS} element={<SystemSettings />} />
 
           {/* Account group */}
           <Route path={ROUTES.ADMIN.ACCOUNT}>
@@ -72,11 +79,11 @@ function AppRoutes() {
             />
             <Route
               path={ROUTES.ADMIN.ACCOUNT_PROFILE}
-              element={<PlaceholderPage title="Admin Account: My Profile" />}
+              element={<AccountProfile />}
             />
             <Route
               path={ROUTES.ADMIN.ACCOUNT_SECURITY}
-              element={<PlaceholderPage title="Admin Account: Security" />}
+              element={<AccountSecurity />}
             />
           </Route>
         </Route>
