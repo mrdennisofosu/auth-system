@@ -15,18 +15,15 @@ const TITLES = {
   [ROUTES.ADMIN.ACTIVITY_LOGS]: 'Activity Logs',
   [ROUTES.ADMIN.ANNOUNCEMENTS]: 'Manage Announcements',
   [ROUTES.ADMIN.SUPPORT]: 'Support Requests',
+  [ROUTES.ADMIN.SESSIONS]: 'Active Sessions',
   [ROUTES.ADMIN.SETTINGS]: 'System Settings',
-  [ROUTES.ADMIN.ACCOUNT_PROFILE]: 'My Profile',
-  [ROUTES.ADMIN.ACCOUNT_SECURITY]: 'Security',
-  [ROUTES.ADMIN.ACCOUNT_SESSIONS]: 'Active Sessions',
+  [ROUTES.ADMIN.ACCOUNT]: 'My Account',
   [ROUTES.USER.DASHBOARD]: 'My Dashboard',
-  [ROUTES.USER.PROFILE]: 'My Profile',
-  [ROUTES.USER.PASSWORD]: 'Change Password',
-  [ROUTES.USER.EMAIL_VERIFICATION]: 'Email Verification',
-  [ROUTES.USER.SESSIONS]: 'Active Sessions',
-  [ROUTES.USER.ACTIVITY]: 'Recent Activity',
-  [ROUTES.USER.SUPPORT]: 'Support',
   [ROUTES.USER.ANNOUNCEMENTS]: 'Announcements',
+  [ROUTES.USER.SUPPORT]: 'Support',
+  [ROUTES.USER.ACTIVITY]: 'Recent Activity',
+  [ROUTES.USER.SESSIONS]: 'Active Sessions',
+  [ROUTES.USER.ACCOUNT]: 'My Account',
 }
 
 // The text shown in the browser tab for a given URL path.
@@ -34,13 +31,7 @@ export function getPageTitle(pathname) {
   const path = pathname.length > 1 ? pathname.replace(/\/$/, '') : pathname
 
   if (TITLES[path]) return `${TITLES[path]} | ${APP_NAME}`
-
-  if (
-    path.startsWith(`${ROUTES.ANNOUNCEMENTS}/`) ||
-    path.startsWith(`${ROUTES.USER.ANNOUNCEMENTS}/`)
-  ) {
-    return `Announcement | ${APP_NAME}`
-  }
+  if (path.startsWith(`${ROUTES.ANNOUNCEMENTS}/`)) return `Announcement | ${APP_NAME}`
 
   return `Page not found | ${APP_NAME}`
 }

@@ -1,13 +1,14 @@
 import { Link } from "react-router";
+import AnnouncementCard from "../announcements/AnnouncementCard";
 import Button from "../ui/Button";
 import Spinner from "../ui/Spinner";
-import { useAsyncData } from "../../hooks/useAsyncData";
-import { getPublishedAnnouncements } from "../../services/announcementService";
-import { formatDate } from "../../utils/formatDate";
 import { ROUTES } from "../../constants/routePaths";
+import { useAsyncData } from "../../hooks/useAsyncData";
+import { getAnnouncementTeasers } from "../../services/announcementService";
 
 // Defined OUTSIDE the component so its identity never changes (see useAsyncData).
-const fetchLatest = () => getPublishedAnnouncements({ limit: 3 });
+// Only TWO previews are shown on the homepage.
+const fetchLatest = () => getAnnouncementTeasers({ limit: 2 });
 
 function LatestAnnouncements() {
   const { data, loading, error, reload } = useAsyncData(fetchLatest);
@@ -25,21 +26,19 @@ function LatestAnnouncements() {
         </div>
         <Link
           to={ROUTES.ANNOUNCEMENTS}
-          className="inline-flex min-h-11 items-center text-sm font-semibold text-brand-700 hover:text-brand-800"
+          className="inline-flex min-h-11 items-center text-sm font-semibold text-brand-700 hover:underline"
         >
           View all
         </Link>
       </div>
 
       <div className="mt-6">
-        {/* State 1: loading */}
         {loading && (
           <div className="flex items-center gap-3 text-slate-600">
             <Spinner /> Loading announcements...
           </div>
         )}
 
-        {/* State 2: error */}
         {error && (
           <div
             role="alert"
@@ -52,39 +51,19 @@ function LatestAnnouncements() {
           </div>
         )}
 
-        {/* State 3: loaded, but nothing to show */}
         {!loading && !error && data.length === 0 && (
           <p className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-600">
             No announcements have been published yet.
           </p>
         )}
 
-        {/* State 4: loaded with data */}
         {!loading && !error && data.length > 0 && (
-          <ul className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-4 xl:grid-cols-2">
             {data.map((announcement) => (
-              <li
+              <AnnouncementCard
                 key={announcement.id}
-                className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
-              >
-                <time
-                  dateTime={announcement.publishedAt}
-                  className="text-xs font-medium text-slate-500"
-                >
-                  {formatDate(announcement.publishedAt)}
-                </time>
-                <h3 className="mt-1 font-semibold text-slate-900">
-                  <Link
-                    to={`${ROUTES.ANNOUNCEMENTS}/${announcement.id}`}
-                    className="hover:text-brand-700 hover:underline"
-                  >
-                    {announcement.title}
-                  </Link>
-                </h3>
-                <p className="mt-2 line-clamp-3 text-sm text-slate-600">
-                  {announcement.content}
-                </p>
-              </li>
+                announcement={announcement}
+              />
             ))}
           </ul>
         )}

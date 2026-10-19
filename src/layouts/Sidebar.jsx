@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { NavLink, useLocation } from "react-router";
-import { ChevronDown, LogOut, X } from "lucide-react";
+import { NavLink } from "react-router";
+import { LogOut, X } from "lucide-react";
 import { APP_NAME } from "../constants/app";
 
 const itemBase =
-  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors";
+  "group relative flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 lg:min-h-10";
 
-// A single link in the sidebar. NavLink knows if its page is the current one.
+// One link in the sidebar. NavLink knows if its page is the current one.
 function SidebarLink({ item, onNavigate }) {
   const Icon = item.icon;
 
@@ -17,79 +16,47 @@ function SidebarLink({ item, onNavigate }) {
       className={({ isActive }) =>
         `${itemBase} ${
           isActive
-            ? "bg-brand-50 text-brand-700"
-            : "text-slate-700 hover:bg-slate-100"
+            ? "bg-brand-100 text-brand-800"
+            : "text-slate-700 hover:translate-x-1 hover:bg-brand-50 hover:text-brand-700"
         }`
       }
     >
-      <Icon size={18} aria-hidden="true" />
-      {item.label}
+      {({ isActive }) => (
+        <>
+          {/* The blue bar on the left edge */}
+          <span
+            aria-hidden="true"
+            className={`absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-brand-600 transition-opacity duration-150 ${
+              isActive ? "opacity-100" : "opacity-0 group-hover:opacity-60"
+            }`}
+          />
+          <Icon
+            size={18}
+            aria-hidden="true"
+            className="shrink-0 transition-transform duration-150 group-hover:scale-110"
+          />
+          {item.label}
+        </>
+      )}
     </NavLink>
   );
 }
 
-// A collapsible heading (Security, Account, Management...) with links inside.
-function SidebarGroup({ group, onNavigate }) {
-  const { pathname } = useLocation();
-  const hasActiveChild = group.children.some((child) =>
-    pathname.startsWith(child.to),
-  );
-
-  // Start open if the current page is inside this group
-  const [open, setOpen] = useState(hasActiveChild);
-  const Icon = group.icon;
-
-  return (
-    <div>
-      <button
-        type="button"
-        onClick={() => setOpen((previous) => !previous)}
-        aria-expanded={open}
-        className={`${itemBase} w-full justify-between hover:bg-slate-100 ${
-          hasActiveChild ? "text-brand-700" : "text-slate-700"
-        }`}
-      >
-        <span className="flex items-center gap-3">
-          <Icon size={18} aria-hidden="true" />
-          {group.label}
-        </span>
-        <ChevronDown
-          size={16}
-          aria-hidden="true"
-          className={`transition-transform ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-
-      {open && (
-        <div className="ml-4 mt-1 space-y-1 border-l border-slate-200 pl-3">
-          {group.children.map((child) => (
-            <SidebarLink key={child.to} item={child} onNavigate={onNavigate} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// navigation: the config list (groups and links)
+// navigation: the list of links for this person's role
 // isOpen / onClose: control the drawer on phones
 function Sidebar({ navigation, isOpen, onClose, onLogout }) {
   const content = (
     <div className="flex min-h-full flex-col justify-between gap-4 p-4">
       <nav aria-label="Main navigation" className="space-y-1">
-        {navigation.map((item) =>
-          item.children ? (
-            <SidebarGroup key={item.label} group={item} onNavigate={onClose} />
-          ) : (
-            <SidebarLink key={item.to} item={item} onNavigate={onClose} />
-          ),
-        )}
+        {navigation.map((item) => (
+          <SidebarLink key={item.to} item={item} onNavigate={onClose} />
+        ))}
       </nav>
 
       <button
         type="button"
         onClick={onLogout}
-        className={`${itemBase} w-full text-red-600 hover:bg-red-50`}
+        className={`${itemBase} w-full text-red-600 hover:translate-x-1 hover:bg-red-50`}
       >
         <LogOut size={18} aria-hidden="true" />
         Logout
@@ -99,9 +66,9 @@ function Sidebar({ navigation, isOpen, onClose, onLogout }) {
 
   return (
     <>
-      {/* Desktop (lg and up): permanent sidebar */}
+      {/* Desktop (lg and up): permanent sidebar that stays in place while the page scrolls */}
       <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white lg:block">
-        <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="sticky top-16 h-[calc(100dvh-4rem)] overflow-y-auto">
           {content}
         </div>
       </aside>
@@ -121,7 +88,7 @@ function Sidebar({ navigation, isOpen, onClose, onLogout }) {
                 type="button"
                 onClick={onClose}
                 aria-label="Close menu"
-                className="grid h-11 w-11 place-items-center rounded-lg text-slate-600 hover:bg-slate-100"
+                className="grid h-11 w-11 place-items-center rounded-lg text-slate-600 hover:bg-brand-50 hover:text-brand-700"
               >
                 <X size={20} aria-hidden="true" />
               </button>

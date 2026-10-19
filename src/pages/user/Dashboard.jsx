@@ -129,7 +129,7 @@ function Dashboard() {
                     {formatDate(announcement.publishedAt)}
                   </time>
                   <Link
-                    to={`${ROUTES.USER.ANNOUNCEMENTS}/${announcement.id}`}
+                    to={`${ROUTES.ANNOUNCEMENTS}/${announcement.id}`}
                     className="block font-medium text-slate-900 hover:text-brand-700 hover:underline"
                   >
                     {announcement.title}

@@ -14,21 +14,18 @@ import AccessDenied from "../pages/auth/AccessDenied";
 import RegistrationGate from "../components/auth/RegistrationGate";
 import AnnouncementsPage from "../components/announcements/AnnouncementsPage";
 import AnnouncementDetailPage from "../components/announcements/AnnouncementDetailPage";
+import MyAccount from "../pages/account/MyAccount";
 import Overview from "../pages/admin/Overview";
 import UserManagement from "../pages/admin/UserManagement";
 import ActivityLogs from "../pages/admin/ActivityLogs";
 import Announcements from "../pages/admin/Announcements";
 import SupportRequests from "../pages/admin/SupportRequests";
-import SystemSettings from "../pages/admin/SystemSettings";
-import AccountProfile from "../pages/admin/AccountProfile";
-import AccountSecurity from "../pages/admin/AccountSecurity";
 import AccountSessions from "../pages/admin/AccountSessions";
+import SystemSettings from "../pages/admin/SystemSettings";
 import Dashboard from "../pages/user/Dashboard";
 import Support from "../pages/user/Support";
-import SecurityPassword from "../pages/user/SecurityPassword";
-import SecurityEmail from "../pages/user/SecurityEmail";
-import SecuritySessions from "../pages/user/SecuritySessions";
 import SecurityActivity from "../pages/user/SecurityActivity";
+import SecuritySessions from "../pages/user/SecuritySessions";
 
 function AppRoutes() {
   return (
@@ -37,14 +34,7 @@ function AppRoutes() {
       <Route element={<AppLayout />}>
         {/* ---------- PUBLIC ROUTES ---------- */}
         <Route path={ROUTES.HOME} element={<Home />} />
-        <Route
-          path={ROUTES.ANNOUNCEMENTS}
-          element={<AnnouncementsPage basePath={ROUTES.ANNOUNCEMENTS} />}
-        />
-        <Route
-          path={`${ROUTES.ANNOUNCEMENTS}/:id`}
-          element={<AnnouncementDetailPage listPath={ROUTES.ANNOUNCEMENTS} />}
-        />
+        <Route path={ROUTES.ANNOUNCEMENTS} element={<AnnouncementsPage />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route
           path={ROUTES.REGISTER}
@@ -59,6 +49,15 @@ function AppRoutes() {
         <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={ROUTES.ACCESS_DENIED} element={<AccessDenied />} />
 
+        {/* ---------- ANY SIGNED-IN PERSON ----------
+            Reading a full announcement needs a sign-in (admins and users). */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path={`${ROUTES.ANNOUNCEMENTS}/:id`}
+            element={<AnnouncementDetailPage />}
+          />
+        </Route>
+
         {/* ---------- ADMIN ROUTES: admins only ---------- */}
         <Route
           path={ROUTES.ADMIN.ROOT}
@@ -69,8 +68,6 @@ function AppRoutes() {
             element={<Navigate to={ROUTES.ADMIN.OVERVIEW} replace />}
           />
           <Route path={ROUTES.ADMIN.OVERVIEW} element={<Overview />} />
-
-          {/* Management group */}
           <Route path={ROUTES.ADMIN.USERS} element={<UserManagement />} />
           <Route path={ROUTES.ADMIN.ACTIVITY_LOGS} element={<ActivityLogs />} />
           <Route
@@ -78,29 +75,9 @@ function AppRoutes() {
             element={<Announcements />}
           />
           <Route path={ROUTES.ADMIN.SUPPORT} element={<SupportRequests />} />
-
-          {/* System */}
+          <Route path={ROUTES.ADMIN.SESSIONS} element={<AccountSessions />} />
           <Route path={ROUTES.ADMIN.SETTINGS} element={<SystemSettings />} />
-
-          {/* Account group */}
-          <Route path={ROUTES.ADMIN.ACCOUNT}>
-            <Route
-              index
-              element={<Navigate to={ROUTES.ADMIN.ACCOUNT_PROFILE} replace />}
-            />
-            <Route
-              path={ROUTES.ADMIN.ACCOUNT_PROFILE}
-              element={<AccountProfile />}
-            />
-            <Route
-              path={ROUTES.ADMIN.ACCOUNT_SECURITY}
-              element={<AccountSecurity />}
-            />
-            <Route
-              path={ROUTES.ADMIN.ACCOUNT_SESSIONS}
-              element={<AccountSessions />}
-            />
-          </Route>
+          <Route path={ROUTES.ADMIN.ACCOUNT} element={<MyAccount />} />
         </Route>
 
         {/* ---------- USER ROUTES: signed-in users only ---------- */}
@@ -113,42 +90,14 @@ function AppRoutes() {
             element={<Navigate to={ROUTES.USER.DASHBOARD} replace />}
           />
           <Route path={ROUTES.USER.DASHBOARD} element={<Dashboard />} />
-
-          {/* Account group (the profile page is shared with the admin dashboard) */}
-          <Route path={ROUTES.USER.ACCOUNT}>
-            <Route
-              index
-              element={<Navigate to={ROUTES.USER.PROFILE} replace />}
-            />
-            <Route path={ROUTES.USER.PROFILE} element={<AccountProfile />} />
-          </Route>
-
-          {/* Security group */}
-          <Route path={ROUTES.USER.SECURITY}>
-            <Route
-              index
-              element={<Navigate to={ROUTES.USER.PASSWORD} replace />}
-            />
-            <Route path={ROUTES.USER.PASSWORD} element={<SecurityPassword />} />
-            <Route
-              path={ROUTES.USER.EMAIL_VERIFICATION}
-              element={<SecurityEmail />}
-            />
-            <Route path={ROUTES.USER.SESSIONS} element={<SecuritySessions />} />
-            <Route path={ROUTES.USER.ACTIVITY} element={<SecurityActivity />} />
-          </Route>
-
-          <Route path={ROUTES.USER.SUPPORT} element={<Support />} />
           <Route
             path={ROUTES.USER.ANNOUNCEMENTS}
-            element={<AnnouncementsPage basePath={ROUTES.USER.ANNOUNCEMENTS} />}
+            element={<AnnouncementsPage />}
           />
-          <Route
-            path={`${ROUTES.USER.ANNOUNCEMENTS}/:id`}
-            element={
-              <AnnouncementDetailPage listPath={ROUTES.USER.ANNOUNCEMENTS} />
-            }
-          />
+          <Route path={ROUTES.USER.SUPPORT} element={<Support />} />
+          <Route path={ROUTES.USER.ACTIVITY} element={<SecurityActivity />} />
+          <Route path={ROUTES.USER.SESSIONS} element={<SecuritySessions />} />
+          <Route path={ROUTES.USER.ACCOUNT} element={<MyAccount />} />
         </Route>
 
         {/* ---------- UNKNOWN URLS ---------- */}

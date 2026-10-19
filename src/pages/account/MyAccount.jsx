@@ -1,13 +1,14 @@
+import ChangePasswordForm from "../../components/account/ChangePasswordForm";
 import ProfileForm from "../../components/account/ProfileForm";
+import { RoleBadge, StatusBadge } from "../../components/admin/UserBadges";
 import Badge from "../../components/ui/Badge";
 import Card from "../../components/ui/Card";
 import PageContainer from "../../components/ui/PageContainer";
 import PageHeader from "../../components/ui/PageHeader";
-import { RoleBadge, StatusBadge } from "../../components/admin/UserBadges";
 import { useAuth } from "../../hooks/useAuth";
-import { formatDate } from "../../utils/formatDate";
+import { formatDate, formatDateTime } from "../../utils/formatDate";
 
-function AccountProfile() {
+function MyAccount() {
   const { user } = useAuth();
 
   const details = [
@@ -20,18 +21,27 @@ function AccountProfile() {
       </Badge>,
     ],
     ["Member since", formatDate(user.createdAt)],
+    ["Last sign-in", formatDateTime(user.lastLogin)],
   ];
 
   return (
     <PageContainer>
-      <PageHeader title="My Profile" description="Your personal information." />
+      <PageHeader
+        title="My Account"
+        description="Your personal information and password."
+      />
 
       <div className="grid gap-4 xl:grid-cols-3">
-        <Card title="Personal information" className="xl:col-span-2">
-          <ProfileForm />
-        </Card>
+        <div className="space-y-4 xl:col-span-2">
+          <Card title="Personal information">
+            <ProfileForm />
+          </Card>
+          <Card title="Change password">
+            <ChangePasswordForm />
+          </Card>
+        </div>
 
-        <Card title="Account">
+        <Card title="Account details">
           <dl className="divide-y divide-slate-100 text-sm">
             {details.map(([label, value]) => (
               <div
@@ -39,7 +49,9 @@ function AccountProfile() {
                 className="flex items-center justify-between gap-4 py-2.5"
               >
                 <dt className="text-slate-500">{label}</dt>
-                <dd className="font-medium text-slate-900">{value}</dd>
+                <dd className="text-right font-medium text-slate-900">
+                  {value}
+                </dd>
               </div>
             ))}
           </dl>
@@ -49,4 +61,4 @@ function AccountProfile() {
   );
 }
 
-export default AccountProfile;
+export default MyAccount;

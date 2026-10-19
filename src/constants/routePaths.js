@@ -1,7 +1,7 @@
 // Every URL in the app is defined here, once.
 
 export const ROUTES = {
-  // Public pages (anyone can open these)
+  // Public pages (anyone can open these). The full announcement page needs a sign-in.
   HOME: '/',
   ANNOUNCEMENTS: '/announcements',
   LOGIN: '/login',
@@ -11,38 +11,27 @@ export const ROUTES = {
   RESET_PASSWORD: '/reset-password',
   ACCESS_DENIED: '/access-denied',
 
-  // Admin dashboard
+  // Administrator pages
   ADMIN: {
     ROOT: '/admin',
     OVERVIEW: '/admin/overview',
-    // Management group
     USERS: '/admin/users',
     ACTIVITY_LOGS: '/admin/activity-logs',
     ANNOUNCEMENTS: '/admin/announcements',
     SUPPORT: '/admin/support',
-    // System
+    SESSIONS: '/admin/sessions',
     SETTINGS: '/admin/settings',
-    // Account group
     ACCOUNT: '/admin/account',
-    ACCOUNT_PROFILE: '/admin/account/profile',
-    ACCOUNT_SECURITY: '/admin/account/security',
-    ACCOUNT_SESSIONS: '/admin/account/sessions',  },
+  },
 
-  // User dashboard
+  // User pages
   USER: {
     ROOT: '/user',
     DASHBOARD: '/user/dashboard',
-    // Account group
-    ACCOUNT: '/user/account',
-    PROFILE: '/user/account/profile',
-    // Security group
-    SECURITY: '/user/security',
-    PASSWORD: '/user/security/password',
-    EMAIL_VERIFICATION: '/user/security/email-verification',
-    SESSIONS: '/user/security/sessions',
-    ACTIVITY: '/user/security/activity',
-    // Other
-    SUPPORT: '/user/support',
     ANNOUNCEMENTS: '/user/announcements',
+    SUPPORT: '/user/support',
+    ACTIVITY: '/user/activity',
+    SESSIONS: '/user/sessions',
+    ACCOUNT: '/user/account',
   },
 }

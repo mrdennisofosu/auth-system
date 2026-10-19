@@ -6,15 +6,25 @@ import EmptyState from "../ui/EmptyState";
 import ErrorState from "../ui/ErrorState";
 import LoadingState from "../ui/LoadingState";
 import PageContainer from "../ui/PageContainer";
+import { ROLES } from "../../constants/roles";
+import { ROUTES } from "../../constants/routePaths";
 import { useAsyncData } from "../../hooks/useAsyncData";
+import { useAuth } from "../../hooks/useAuth";
 import { getPublishedAnnouncement } from "../../services/announcementService";
 import { formatDate } from "../../utils/formatDate";
 
-// One full announcement. listPath is where "Back" goes.
-function AnnouncementDetailPage({ listPath }) {
+// One full announcement. Only reachable when signed in (the route is protected).
+function AnnouncementDetailPage() {
   const { id } = useParams();
+  const { user } = useAuth();
   const fetchOne = useCallback(() => getPublishedAnnouncement(id), [id]);
   const { data, loading, error, reload } = useAsyncData(fetchOne);
+
+  // "Back" goes to the list the person came from
+  const listPath =
+    user?.role === ROLES.USER
+      ? ROUTES.USER.ANNOUNCEMENTS
+      : ROUTES.ANNOUNCEMENTS;
 
   return (
     <PageContainer>

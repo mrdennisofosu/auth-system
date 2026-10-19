@@ -1,25 +1,40 @@
 import { Megaphone } from "lucide-react";
+import Button from "../ui/Button";
 import EmptyState from "../ui/EmptyState";
 import ErrorState from "../ui/ErrorState";
 import LoadingState from "../ui/LoadingState";
 import PageContainer from "../ui/PageContainer";
 import PageHeader from "../ui/PageHeader";
 import AnnouncementCard from "./AnnouncementCard";
+import { ROUTES } from "../../constants/routePaths";
 import { useAsyncData } from "../../hooks/useAsyncData";
-import { getPublishedAnnouncements } from "../../services/announcementService";
+import { useAuth } from "../../hooks/useAuth";
+import {
+  getAnnouncementTeasers,
+  getPublishedAnnouncements,
+} from "../../services/announcementService";
 
-// Defined outside the component so its identity is stable (see useAsyncData)
-const fetchAll = () => getPublishedAnnouncements();
+// Defined outside the component so their identity is stable (see useAsyncData)
+const fetchTeasers = () => getAnnouncementTeasers();
+const fetchFull = () => getPublishedAnnouncements();
 
-// basePath decides where each card links: "/announcements" or "/user/announcements"
-function AnnouncementsPage({ basePath }) {
-  const { data, loading, error, reload } = useAsyncData(fetchAll);
+// The list of announcements. Visitors get short previews only; signed-in people get more.
+function AnnouncementsPage() {
+  const { user } = useAuth();
+  const { data, loading, error, reload } = useAsyncData(
+    user ? fetchFull : fetchTeasers,
+  );
 
   return (
     <PageContainer>
       <PageHeader
         title="Announcements"
-        description="News and updates from the administrators."
+        description={
+          user
+            ? "News and updates from the administrators."
+            : "Sign in to read the full announcements."
+        }
+        actions={!user && <Button to={ROUTES.LOGIN}>Sign In</Button>}
       />
 
       {loading && !data && <LoadingState message="Loading announcements..." />}
@@ -39,7 +54,6 @@ function AnnouncementsPage({ basePath }) {
             <AnnouncementCard
               key={announcement.id}
               announcement={announcement}
-              to={`${basePath}/${announcement.id}`}
             />
           ))}
         </ul>

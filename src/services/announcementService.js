@@ -161,3 +161,36 @@ export async function deleteAnnouncement(id, actor) {
 
   logAction(actor, `Deleted the announcement "${announcement.title}".`)
 }
+
+// What a VISITOR (not signed in) may see: title, date and a short opening line.
+// The full text is only available to signed-in people (getPublishedAnnouncement).
+function makeExcerpt(content, maxLength = 90) {
+  const text = content.trim().replace(/\s+/g, ' ')
+  if (text.length <= maxLength) return text
+  return `${text.slice(0, maxLength).replace(/\s+\S*$/, '')}…`
+}
+
+export async function getAnnouncementTeasers({ limit } = {}) {
+  await delay()
+
+  if (MOCK_MODE === 'error') {
+    throw new ApiError('We could not load the announcements. Please try again.', {
+      status: 500,
+      code: 'SERVER_ERROR',
+    })
+  }
+
+  if (MOCK_MODE === 'empty') return []
+
+  const teasers = mockAnnouncements
+    .filter((item) => item.status === ANNOUNCEMENT_STATUS.PUBLISHED)
+    .sort(byNewest)
+    .map((item) => ({
+      id: item.id,
+      title: item.title,
+      excerpt: makeExcerpt(item.content),
+      publishedAt: item.publishedAt,
+    }))
+
+  return limit ? teasers.slice(0, limit) : teasers
+}
